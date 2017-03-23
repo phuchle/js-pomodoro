@@ -21,6 +21,7 @@ h1 {
 #settings-container {
   display: flex;
   flex-direction: row;
+  cursor: default;
 }
 
 #pomodoro {
