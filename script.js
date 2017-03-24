@@ -99,6 +99,7 @@ var countdown = (mode) => {
       seconds--;
     }
   }
+  
   window.setInterval(updateTimer, 1000)
 }
 
