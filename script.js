@@ -5,8 +5,34 @@
 // press - or + to subtract or add time values
 // when - or +
 
-var getInitialIntervals = () =>  {
+// TimeController class
+// Initial time value, subtract method, add method
 
+class TimeController {
+  constructor(timeDisplayElement) {
+    this.timeDisplayElement = timeDisplayElement;
+    this.time = parseInt(timeDisplayElement.innerText);
+  }
+
+  addTime() {
+    this.time++;
+    this.updateTimeDisplayElement();
+  }
+
+  subtractTime() {
+    this.time--;
+    this.updateTimeDisplayElement();
+  }
+
+  updateTimeDisplayElement() {
+    this.timeDisplayElement.innerText = this.time;
+
+    //update countdown if workTimer is changed
+    if (this.timeDisplayElement.id === 'workTimer') {
+      var countdown = document.getElementById('countdown');
+      countdown.innerText = this.time;
+    }
+  }
 }
 
 var addTimeChangeDetection = () => {
@@ -16,40 +42,35 @@ var addTimeChangeDetection = () => {
   var subtractWorkTime = document.getElementById("subtractWorkTime");
   var addWorkTime = document.getElementById("addWorkTime");
 
-  var addTimeButtons = [addBreakTime, addWorkTime];
-  var subtractTimeButtons = [subtractBreakTime, subtractWorkTime];
+  // select session length elements
+  var breakTimer = document.getElementById('breakTimer');
+  var workTimer = document.getElementById('workTimer');
 
-  subtractTimeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      subtractTime(button);
-    });
-  });
-  addTimeButtons.map(button => {
-    return button.addEventListener("click", () => {
-      addTime(button);
-    });
+  //create time controller objects
+  var breakController = new TimeController(breakTimer);
+  var workController = new TimeController(workTimer);
+
+  subtractBreakTime.addEventListener("click", () => {
+    breakController.subtractTime();
   });
 
+  addBreakTime.addEventListener("click", () => {
+    breakController.addTime();
+  });
+
+  subtractWorkTime.addEventListener("click", () => {
+    workController.subtractTime();
+  });
+
+  addWorkTime.addEventListener("click", () => {
+    workController.addTime();
+  });
+
 }
 
-var subtractTime = (button) => {
-    // going two siblings over to get to the element, skipping the stuff between
-  var timeValue = button.nextSibling.nextSibling.innerText;
-  timeValue = parseInt(timeValue);
-  timeValue--;
-  button.nextSibling.nextSibling.innerText = timeValue;
-}
-
-var addTime = (button) => {
-  // going two siblings over to get to the element, skipping the stuff between
-  var timeValue = button.previousSibling.previousSibling.innerText;
-  timeValue = parseInt(timeValue);
-  timeValue++;
-  button.previousSibling.previousSibling.innerText = timeValue;
-}
-
-
-var updateTimer = () => {
+var countdown = (minutes) => {
+  //set initial time to minutes,
+  var seconds = 0;
 
 }
 
