@@ -66,42 +66,62 @@ var addTimeChangeDetection = () => {
   });
 
   clock.addEventListener('click', () => {
-    countdown();
+    toggleCountdown();
   });
 
 }
 
 var countdown = (mode) => {
+  // this function returns updateTimer() which can be toggled
   var countdownTimer = document.getElementById('countdown');
   var minutes;
-  var seconds = 0;
+  var seconds;
+  var timer;
+  debugger;
+
   if (mode === 'break') {
     var breakLength = document.getElementById('breakTimer').innerText;
     minutes = parseInt(breakLength);
   } else {
     minutes = parseInt(countdownTimer.innerText);
+    if (countdownTimer.innerText.length > 2) {
+      seconds = parseInt(countdownTimer.innerText.substr(-2));
+    }
   }
 
-  function updateTimer() {
+  return function updateTimer() {
+    seconds === undefined ? seconds = 0 : seconds;
     if (seconds < 10) {
-        countdownTimer.innerText = minutes + ':' + '0' + seconds.toString();
+      countdownTimer.innerText = minutes + ':' + '0' + seconds.toString();
     } else {
       countdownTimer.innerText = minutes + ':' + seconds;
     }
 
+    // if you reach the end of a break or work session, automatically go to next session
     if (minutes === 0 && seconds === 0) {
-      mode === 'break' ? countdown('work') : countdown('break');
-    }
-    else if (seconds === 0) {
+      mode === 'break' ? countdown('work')() : countdown('break')();
+    } else if (seconds === 0) {
       seconds = 59;
       minutes--;
     } else {
       seconds--;
     }
   }
-  
-  window.setInterval(updateTimer, 1000)
 }
+
+var countingDown;
+var toggleCountdown = () => {
+  // when toggleCountdown is pressed, it will run or stop countdown
+  // if countdown is running, it will clear countdown
+  var timer = countdown();
+  if (!countingDown) {
+    countingDown = setInterval(timer, 1000);
+  } else {
+    clearInterval(countingDown);
+    countingDown = null;
+  }
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   addTimeChangeDetection();
