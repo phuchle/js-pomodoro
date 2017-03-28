@@ -79,6 +79,7 @@ function countdown() {
   var minutes;
   var seconds;
   var timer;
+  var status = document.getElementById('status');
   // debugger;
   // checks which session mode (break or work) the clock is on
   // if break, sets minutes to breakLength
@@ -93,6 +94,7 @@ function countdown() {
   }
 
   return function updateTimer() {
+    setStatus(status);
     // if seconds are undefined, assigns seconds to 0
     seconds === undefined ? seconds = 0 : seconds;
     // pads seconds if seconds is a single digit
@@ -121,6 +123,14 @@ function countdown() {
     } else {
       seconds--;
     }
+  }
+}
+
+var setStatus = (status) => {
+  if (mode === 'work') {
+    status.innerText = 'Workin\'';
+  } else if (mode === 'break') {
+    status.innerText = 'Chillin\'';
   }
 }
 
