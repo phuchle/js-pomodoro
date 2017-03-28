@@ -1,9 +1,13 @@
 // --- User Story: I can start a 25 minute pomodoro, and the timer will go off once 25 minutes has elapsed.
-// User Story: I can reset the clock for my next pomodoro.
+// --- User Story: I can reset the clock for my next pomodoro.
 // ---User Story: I can customize the length of each pomodoro.
 
 // TimeController class
 // Initial time value, subtract method, add method
+
+var countingDown; // will be truthy if countdown is running, else null
+var saveFile; // time left is saved to this object
+var mode = 'work'; // default mode begins on a work session
 
 class TimeController {
   constructor(timeDisplayElement) {
@@ -80,16 +84,15 @@ var addTimeChangeDetection = () => {
 
 }
 
-var mode = 'work';
 function countdown(save) {
   // this function returns updateTimer() which can be toggled
   var breakLength = document.getElementById('breakTimer').innerText;
   var workLength = document.getElementById('workTimer').innerText;
   var countdownTimer = document.getElementById('countdown');
+  var clock = document.getElementById('clock');
   var minutes;
   var seconds;
   var timer;
-  var status = document.getElementById('status');
   // debugger;
   // checks which session mode (break or work) the clock is on
   // if break, sets minutes to breakLength
@@ -113,7 +116,7 @@ function countdown(save) {
   }
 
   return function updateTimer() {
-    setStatus(status);
+    updateClockColor(clock);
     // if seconds are undefined, assigns seconds to 0
     seconds === undefined ? seconds = 0 : seconds;
     // pads seconds if seconds is a single digit
@@ -147,11 +150,11 @@ function countdown(save) {
   }
 }
 
-var setStatus = (status) => {
+var updateClockColor = (clock) => {
   if (mode === 'work') {
-    status.innerText = 'Workin\'';
+    clock.style.backgroundColor = "#bff55e";
   } else if (mode === 'break') {
-    status.innerText = 'Chillin\'';
+    clock.style.backgroundColor = "#f58686";
   }
 }
 
@@ -166,14 +169,12 @@ var saveTime = () => {
   return save;
 }
 
-var countingDown;
-var saveFile;
 var toggleCountdown = () => {
   // when toggleCountdown is pressed, it will run or stop countdown
   // if countdown is running, it will clear countdown
   var timer = countdown(saveFile);
   if (!countingDown) {
-    countingDown = setInterval(timer, 100);
+    countingDown = setInterval(timer, 1000);
   } else {
     saveFile = saveTime();
     clearInterval(countingDown);
