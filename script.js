@@ -12,16 +12,25 @@ class TimeController {
   }
 
   addTime() {
-    this.time++;
-    this.updateTimeDisplayElement();
+    if (countingDown) {
+      return null;
+    } else {
+      this.time++;
+      this.updateTimeDisplayElement();
+    }
   }
 
   subtractTime() {
-    this.time--;
-    this.updateTimeDisplayElement();
+    if (countingDown) {
+      return null;
+    } else {
+      this.time--;
+      this.updateTimeDisplayElement();
+    }
   }
 
   updateTimeDisplayElement() {
+    saveFile = null;
     this.timeDisplayElement.innerText = this.time;
 
     //update countdown if workTimer is changed
@@ -70,6 +79,7 @@ var addTimeChangeDetection = () => {
   });
 
 }
+
 var mode = 'work';
 function countdown(save) {
   // this function returns updateTimer() which can be toggled

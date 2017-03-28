@@ -28,6 +28,7 @@ h1 {
   background-color: #FFFFFF;
   border-radius: 5px;
   padding: 5px 10px;
+  cursor: pointer;
 }
 
 #breakTimer, #workTimer {
@@ -71,6 +72,7 @@ h1 {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
+  cursor: default;
 }
 
 #clock {
@@ -83,6 +85,7 @@ h1 {
   justify-content: center;
   box-shadow: 0 7px;
   transition: background-color 1s;
+  cursor: pointer;
 }
 
 #clock:active {
