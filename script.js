@@ -70,36 +70,51 @@ var addTimeChangeDetection = () => {
   });
 
 }
-
-var countdown = (mode) => {
+var mode = 'work';
+function countdown() {
   // this function returns updateTimer() which can be toggled
+  var breakLength = document.getElementById('breakTimer').innerText;
+  var workLength = document.getElementById('workTimer').innerText;
   var countdownTimer = document.getElementById('countdown');
   var minutes;
   var seconds;
   var timer;
-  debugger;
-
+  // debugger;
+  // checks which session mode (break or work) the clock is on
+  // if break, sets minutes to breakLength
+  // else work, set minutes to workLength
   if (mode === 'break') {
-    var breakLength = document.getElementById('breakTimer').innerText;
     minutes = parseInt(breakLength);
-  } else {
-    minutes = parseInt(countdownTimer.innerText);
-    if (countdownTimer.innerText.length > 2) {
-      seconds = parseInt(countdownTimer.innerText.substr(-2));
-    }
+  } else { // work
+    minutes = parseInt(workLength);
+    // if (countdownTimer.innerText.length > 2) {
+    //   seconds = parseInt(countdownTimer.innerText.substr(-2));
+    // }
   }
 
   return function updateTimer() {
+    // if seconds are undefined, assigns seconds to 0
     seconds === undefined ? seconds = 0 : seconds;
+    // pads seconds if seconds is a single digit
     if (seconds < 10) {
       countdownTimer.innerText = minutes + ':' + '0' + seconds.toString();
     } else {
       countdownTimer.innerText = minutes + ':' + seconds;
     }
-
     // if you reach the end of a break or work session, automatically go to next session
     if (minutes === 0 && seconds === 0) {
-      mode === 'break' ? countdown('work')() : countdown('break')();
+      // debugger;
+      var newTimer;
+      if (mode === 'break') {
+        minutes = parseInt(workLength);
+        mode = 'work';
+        newTimer = countdown();
+      } else {
+        minutes = parseInt(breakLength);
+        mode = 'break';
+        newTimer = countdown();
+      }
+      newTimer();
     } else if (seconds === 0) {
       seconds = 59;
       minutes--;
@@ -115,7 +130,7 @@ var toggleCountdown = () => {
   // if countdown is running, it will clear countdown
   var timer = countdown();
   if (!countingDown) {
-    countingDown = setInterval(timer, 1000);
+    countingDown = setInterval(timer, 100);
   } else {
     clearInterval(countingDown);
     countingDown = null;
