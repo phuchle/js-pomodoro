@@ -71,7 +71,7 @@ var addTimeChangeDetection = () => {
 
 }
 var mode = 'work';
-function countdown() {
+function countdown(save) {
   // this function returns updateTimer() which can be toggled
   var breakLength = document.getElementById('breakTimer').innerText;
   var workLength = document.getElementById('workTimer').innerText;
@@ -84,7 +84,16 @@ function countdown() {
   // checks which session mode (break or work) the clock is on
   // if break, sets minutes to breakLength
   // else work, set minutes to workLength
-  if (mode === 'break') {
+  // debugger;
+  if (save) {
+    minutes = save.minutes;
+    seconds = save.seconds;
+  }
+  // if (typeof parseInt(countdownTimer.innerText) !== NaN) {
+  //   minutes = parseInt(countdownTimer.innerText.split(':')[0]);
+  //   seconds = parseInt(countdownTimer.innerText.split(':')[0]);
+  // }
+  else if (mode === 'break') {
     minutes = parseInt(breakLength);
   } else { // work
     minutes = parseInt(workLength);
@@ -105,6 +114,8 @@ function countdown() {
     }
     // if you reach the end of a break or work session, automatically go to next session
     if (minutes === 0 && seconds === 0) {
+      var chime = new Audio('./sounds/chime.mp3');
+      chime.play();
       // debugger;
       var newTimer;
       if (mode === 'break') {
@@ -134,14 +145,27 @@ var setStatus = (status) => {
   }
 }
 
+var saveTime = () => {
+  var save = {}
+  var countdownTimer = document.getElementById('countdown');
+  var minutes = parseInt(countdownTimer.innerText.split(':')[0]);
+  var seconds = parseInt(countdownTimer.innerText.split(':')[1]);
+
+  save.minutes = minutes;
+  save.seconds = seconds;
+  return save;
+}
+
 var countingDown;
+var saveFile;
 var toggleCountdown = () => {
   // when toggleCountdown is pressed, it will run or stop countdown
   // if countdown is running, it will clear countdown
-  var timer = countdown();
+  var timer = countdown(saveFile);
   if (!countingDown) {
     countingDown = setInterval(timer, 100);
   } else {
+    saveFile = saveTime();
     clearInterval(countingDown);
     countingDown = null;
   }
