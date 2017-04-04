@@ -1,10 +1,3 @@
-// --- User Story: I can start a 25 minute pomodoro, and the timer will go off once 25 minutes has elapsed.
-// --- User Story: I can reset the clock for my next pomodoro.
-// ---User Story: I can customize the length of each pomodoro.
-
-// TimeController class
-// Initial time value, subtract method, add method
-
 var countingDown; // will be truthy if countdown is running, else null
 var saveFile; // time left is saved to this object
 var mode = 'work'; // default mode begins on a work session
@@ -93,26 +86,17 @@ function countdown(save) {
   var minutes;
   var seconds;
   var timer;
-  // debugger;
   // checks which session mode (break or work) the clock is on
   // if break, sets minutes to breakLength
   // else work, set minutes to workLength
-  // debugger;
   if (save) {
     minutes = save.minutes;
     seconds = save.seconds;
   }
-  // if (typeof parseInt(countdownTimer.innerText) !== NaN) {
-  //   minutes = parseInt(countdownTimer.innerText.split(':')[0]);
-  //   seconds = parseInt(countdownTimer.innerText.split(':')[0]);
-  // }
   else if (mode === 'break') {
     minutes = parseInt(breakLength);
   } else { // work
     minutes = parseInt(workLength);
-    // if (countdownTimer.innerText.length > 2) {
-    //   seconds = parseInt(countdownTimer.innerText.substr(-2));
-    // }
   }
 
   return function updateTimer() {
@@ -129,7 +113,6 @@ function countdown(save) {
     if (minutes === 0 && seconds === 0) {
       var chime = new Audio('./sounds/chime.mp3');
       chime.play();
-      // debugger;
       var newTimer;
       if (mode === 'break') {
         minutes = parseInt(workLength);
@@ -181,7 +164,6 @@ var toggleCountdown = () => {
     countingDown = null;
   }
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
   addTimeChangeDetection();
