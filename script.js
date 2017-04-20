@@ -142,7 +142,7 @@ var updateClockColor = (clock) => {
 }
 
 var saveTime = () => {
-  var save = {}
+  var save = {};
   var countdownTimer = document.getElementById('countdown');
   var minutes = parseInt(countdownTimer.innerText.split(':')[0]);
   var seconds = parseInt(countdownTimer.innerText.split(':')[1]);
