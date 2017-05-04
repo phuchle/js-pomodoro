@@ -1,6 +1,6 @@
-var countingDown; // will be truthy if countdown is running, else null
-var saveFile; // time left is saved to this object
-var mode = 'work'; // default mode begins on a work session
+let countingDown; // will be truthy if countdown is running, else null
+let saveFile; // time left is saved to this object
+let mode = 'work'; // default mode begins on a work session
 
 class TimeController {
   constructor(timeDisplayElement) {
@@ -32,28 +32,25 @@ class TimeController {
 
     //update countdown if workTimer is changed
     if (this.timeDisplayElement.id === 'workTimer') {
-      var countdown = document.getElementById('countdown');
+      let countdown = document.getElementById('countdown');
       countdown.innerText = this.time;
     }
   }
 }
 
-var addTimeChangeDetection = () => {
-  // select all time buttons
-  var subtractBreakTime = document.getElementById('subtractBreakTime');
-  var addBreakTime = document.getElementById('addBreakTime');
-  var subtractWorkTime = document.getElementById('subtractWorkTime');
-  var addWorkTime = document.getElementById('addWorkTime');
+function addTimeChangeDetection() {
+  let subtractBreakTime = document.getElementById('subtractBreakTime');
+  let addBreakTime = document.getElementById('addBreakTime');
+  let subtractWorkTime = document.getElementById('subtractWorkTime');
+  let addWorkTime = document.getElementById('addWorkTime');
 
-  // select session length elements
-  var breakTimer = document.getElementById('breakTimer');
-  var workTimer = document.getElementById('workTimer');
 
-  var clock = document.getElementById('clock');
+  let breakTimer = document.getElementById('breakTimer');
+  let workTimer = document.getElementById('workTimer');
+  let clock = document.getElementById('clock');
 
-  //create time controller objects
-  var breakController = new TimeController(breakTimer);
-  var workController = new TimeController(workTimer);
+  let breakController = new TimeController(breakTimer);
+  let workController = new TimeController(workTimer);
 
   subtractBreakTime.addEventListener('click', () => {
     breakController.subtractTime();
@@ -71,21 +68,18 @@ var addTimeChangeDetection = () => {
     workController.addTime();
   });
 
-  clock.addEventListener('click', () => {
-    toggleCountdown();
-  });
-
+  clock.addEventListener('click', toggleCountdown);
 }
 
 function countdown(save) {
   // this function returns updateTimer() which can be toggled
-  var breakLength = document.getElementById('breakTimer').innerText;
-  var workLength = document.getElementById('workTimer').innerText;
-  var countdownTimer = document.getElementById('countdown');
-  var clock = document.getElementById('clock');
-  var minutes;
-  var seconds;
-  var timer;
+  let breakLength = document.getElementById('breakTimer').innerText;
+  let workLength = document.getElementById('workTimer').innerText;
+  let countdownTimer = document.getElementById('countdown');
+  let clock = document.getElementById('clock');
+  let minutes;
+  let seconds;
+  let timer;
   // checks which session mode (break or work) the clock is on
   // if break, sets minutes to breakLength
   // else work, set minutes to workLength
@@ -111,9 +105,9 @@ function countdown(save) {
     }
     // if you reach the end of a break or work session, automatically go to next session
     if (minutes === 0 && seconds === 0) {
-      var chime = new Audio('./sounds/chime.mp3');
+      let chime = new Audio('./sounds/chime.mp3');
       chime.play();
-      var newTimer;
+      let newTimer;
       if (mode === 'break') {
         minutes = parseInt(workLength);
         mode = 'work';
@@ -133,7 +127,7 @@ function countdown(save) {
   }
 }
 
-var updateClockColor = (clock) => {
+function updateClockColor(clock){
   if (mode === 'work') {
     clock.style.backgroundColor = "#bff55e";
   } else if (mode === 'break') {
@@ -141,21 +135,21 @@ var updateClockColor = (clock) => {
   }
 }
 
-var saveTime = () => {
-  var save = {};
-  var countdownTimer = document.getElementById('countdown');
-  var minutes = parseInt(countdownTimer.innerText.split(':')[0]);
-  var seconds = parseInt(countdownTimer.innerText.split(':')[1]);
+function saveTime(){
+  let save = {};
+  let countdownTimer = document.getElementById('countdown');
+  let minutes = parseInt(countdownTimer.innerText.split(':')[0]);
+  let seconds = parseInt(countdownTimer.innerText.split(':')[1]);
 
   save.minutes = minutes;
   save.seconds = seconds;
   return save;
 }
 
-var toggleCountdown = () => {
+function toggleCountdown(){
   // when toggleCountdown is pressed, it will run or stop countdown
   // if countdown is running, it will clear countdown
-  var timer = countdown(saveFile);
+  let timer = countdown(saveFile);
   if (!countingDown) {
     countingDown = setInterval(timer, 1000);
   } else {
@@ -165,6 +159,4 @@ var toggleCountdown = () => {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  addTimeChangeDetection();
-});
+document.addEventListener('DOMContentLoaded', addTimeChangeDetection);
